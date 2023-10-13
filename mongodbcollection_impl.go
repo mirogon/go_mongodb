@@ -26,7 +26,12 @@ func (mongoCollection MongoDbCollectionImpl) InsertOne(data interface{}) error {
 }
 
 func (mongoCollection MongoDbCollectionImpl) FindOne(filter interface{}, opts ...*options.FindOneOptions) (*mongo.SingleResult, error) {
-	result := mongoCollection.collection.FindOne(context.TODO(), filter, opts[0])
+	var result *mongo.SingleResult
+	if len(opts) > 0 {
+		result = mongoCollection.collection.FindOne(context.TODO(), filter, opts[0])
+	} else {
+		result = mongoCollection.collection.FindOne(context.TODO(), filter)
+	}
 	if result.Err() != nil {
 		return result, result.Err()
 	}
