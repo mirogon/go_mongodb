@@ -10,7 +10,7 @@ import (
 
 type MongoDbCollection interface {
 	InsertOne(interface{}) error
-	FindOne(filter interface{}) *mongo.SingleResult
+	FindOne(filter interface{}, opts ...*options.FindOneOptions) *mongo.SingleResult
 	Find(filter interface{}, opts *options.FindOptions) (*mongo.Cursor, error)
 	FindAll(filter interface{}) (*mongo.Cursor, error)
 	ReplaceOne(filter interface{}, replacement interface{}) error
