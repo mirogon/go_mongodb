@@ -109,7 +109,7 @@ func (mr *MockMongoDbCollectionMockRecorder) FindAll(filter interface{}) *gomock
 }
 
 // FindOne mocks base method.
-func (m *MockMongoDbCollection) FindOne(filter interface{}, opts ...*options.FindOneOptions) *mongo.SingleResult {
+func (m *MockMongoDbCollection) FindOne(filter interface{}, opts ...*options.FindOneOptions) (*mongo.SingleResult, error) {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{filter}
 	for _, a := range opts {
@@ -117,7 +117,8 @@ func (m *MockMongoDbCollection) FindOne(filter interface{}, opts ...*options.Fin
 	}
 	ret := m.ctrl.Call(m, "FindOne", varargs...)
 	ret0, _ := ret[0].(*mongo.SingleResult)
-	return ret0
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
 }
 
 // FindOne indicates an expected call of FindOne.
