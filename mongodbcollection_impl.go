@@ -94,3 +94,7 @@ func (mongoCollection MongoDbCollectionImpl) CreateTTLIndex(ttlSeconds int32) {
 	}
 	mongoCollection.collection.Indexes().CreateOne(context.TODO(), indexModel)
 }
+
+func (mongoCollection MongoDbCollectionImpl) Distinct(fieldName string) ([]interface{}, error) {
+	return mongoCollection.collection.Distinct(context.TODO(), fieldName, bson.D{})
+}

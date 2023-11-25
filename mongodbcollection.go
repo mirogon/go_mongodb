@@ -18,6 +18,7 @@ type MongoDbCollection interface {
 	DeleteOne(filter interface{}) error
 	DeleteAll(filter interface{}) error
 	Count(filter interface{}) (int64, error)
+	Distinct(fieldName string) ([]interface{}, error)
 }
 
 func PersistOne(collection MongoDbCollection, data interface{}) error {

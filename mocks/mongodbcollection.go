@@ -78,6 +78,21 @@ func (mr *MockMongoDbCollectionMockRecorder) DeleteOne(filter interface{}) *gomo
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteOne", reflect.TypeOf((*MockMongoDbCollection)(nil).DeleteOne), filter)
 }
 
+// Distinct mocks base method.
+func (m *MockMongoDbCollection) Distinct(fieldName string) ([]interface{}, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Distinct", fieldName)
+	ret0, _ := ret[0].([]interface{})
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// Distinct indicates an expected call of Distinct.
+func (mr *MockMongoDbCollectionMockRecorder) Distinct(fieldName interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Distinct", reflect.TypeOf((*MockMongoDbCollection)(nil).Distinct), fieldName)
+}
+
 // Find mocks base method.
 func (m *MockMongoDbCollection) Find(filter interface{}, opts *options.FindOptions) (*mongo.Cursor, error) {
 	m.ctrl.T.Helper()
