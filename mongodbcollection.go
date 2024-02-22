@@ -10,7 +10,7 @@ import (
 
 type MongoDbCollection interface {
 	InsertOne(interface{}) error
-	FindOne(filter interface{}, opts ...*options.FindOneOptions) (*mongo.SingleResult, error)
+	FindOne(filter interface{}, opts ...*options.FindOneOptions) *mongo.SingleResult
 	Find(filter interface{}, opts *options.FindOptions) (*mongo.Cursor, error)
 	FindAll(filter interface{}) (*mongo.Cursor, error)
 	ReplaceOne(filter interface{}, replacement interface{}) error
@@ -50,7 +50,7 @@ func GetOne[filterValueType any, resultType any](collection MongoDbCollection, f
 		return empty, errors.New("Collection missing")
 	}
 	filter := bson.D{{filterKey, filterValue}}
-	result, _ := collection.FindOne(filter)
+	result := collection.FindOne(filter)
 	if result == nil || result.Err() != nil {
 		return empty, errors.New("Not found")
 	}
@@ -86,7 +86,7 @@ func DeleteAll(collection MongoDbCollection) error {
 
 func Exists[filterValueType any](collection MongoDbCollection, filterKey string, filterValue filterValueType) bool {
 	filter := bson.D{{filterKey, filterValue}}
-	result, _ := collection.FindOne(filter)
+	result := collection.FindOne(filter)
 	if result == nil {
 		return false
 	}

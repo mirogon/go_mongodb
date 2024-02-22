@@ -25,12 +25,8 @@ func (mongoCollection MongoDbCollectionImpl) InsertOne(data interface{}) error {
 	return nil
 }
 
-func (mongoCollection MongoDbCollectionImpl) FindOne(filter interface{}, opts ...*options.FindOneOptions) (*mongo.SingleResult, error) {
-	result := mongoCollection.collection.FindOne(context.TODO(), filter, opts...)
-	if result.Err() != nil {
-		return result, result.Err()
-	}
-	return result, nil
+func (mongoCollection MongoDbCollectionImpl) FindOne(filter interface{}, opts ...*options.FindOneOptions) *mongo.SingleResult {
+	return mongoCollection.collection.FindOne(context.TODO(), filter, opts...)
 }
 
 func (mongoCollection MongoDbCollectionImpl) Find(filter interface{}, opt *options.FindOptions) (*mongo.Cursor, error) {
