@@ -69,7 +69,7 @@ func GetOne_(collection MongoDbCollection, keyName string, value string, dataRef
 
 	filter := bson.D{{keyName, value}}
 
-	result := collection.FindOne(&filter)
+	result := collection.FindOne(filter)
 	if result == nil || result.Err() != nil {
 		return errors.New("not found")
 	}
