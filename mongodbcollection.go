@@ -61,6 +61,27 @@ func GetOne[filterValueType any, resultType any](collection MongoDbCollection, f
 	}
 	return data, nil
 }
+
+func GetOne_(collection MongoDbCollection, keyName string, value string, dataRef interface{}) error {
+	if collection == nil {
+		return errors.New("collection missing")
+	}
+
+	filter := bson.D{{keyName, value}}
+
+	result := collection.FindOne(&filter)
+	if result == nil || result.Err() != nil {
+		return errors.New("not found")
+	}
+
+	err := result.Decode(dataRef)
+	if err != nil {
+		return errors.New("decore error: " + err.Error())
+	}
+
+	return nil
+}
+
 func DeleteOne[filterValueType any](collection MongoDbCollection, filterKey string, filterValue filterValueType) error {
 	if collection == nil {
 		return errors.New("Collection missing")
