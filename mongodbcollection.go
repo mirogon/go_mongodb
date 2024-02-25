@@ -35,12 +35,25 @@ func PersistOne(collection MongoDbCollection, data interface{}) error {
 // Only replaces, if it doesnt exist already, does nothing and returns error
 func ReplaceOne[filterValueType any, replaceType any](collection MongoDbCollection, filterKey string, filterValue filterValueType, newValue replaceType) error {
 	if collection == nil {
-		return errors.New("Collection missing")
+		return errors.New("collection missing")
 	}
 	err := collection.ReplaceOne(bson.D{{filterKey, filterValue}}, newValue)
 	if err != nil {
 		return err
 	}
+	return nil
+}
+
+func ReplaceOnce_(collection MongoDbCollection, keyName string, filterValue interface{}, newValue interface{}) error {
+	if collection == nil {
+		return errors.New("collection missing")
+	}
+
+	err := collection.ReplaceOne(bson.D{{keyName, filterValue}}, newValue)
+	if err != nil {
+		return err
+	}
+
 	return nil
 }
 
@@ -62,7 +75,8 @@ func GetOne[filterValueType any, resultType any](collection MongoDbCollection, f
 	return data, nil
 }
 
-func GetOne_(collection MongoDbCollection, keyName string, value string, dataRef interface{}) error {
+// dataRef has to be a pointer as its a out value
+func GetOne_(collection MongoDbCollection, keyName string, value interface{}, dataRef interface{}) error {
 	if collection == nil {
 		return errors.New("collection missing")
 	}
@@ -93,6 +107,20 @@ func DeleteOne[filterValueType any](collection MongoDbCollection, filterKey stri
 	}
 	return nil
 }
+
+func DeleteOne_(collection MongoDbCollection, keyName string, filterValue interface{}) error {
+	if collection == nil {
+		return errors.New("collection missing")
+	}
+	filter := bson.D{{keyName, filterValue}}
+
+	err := collection.DeleteOne(filter)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
 func DeleteAll(collection MongoDbCollection) error {
 	if collection == nil {
 		return errors.New("Collection missing")
@@ -107,6 +135,15 @@ func DeleteAll(collection MongoDbCollection) error {
 
 func Exists[filterValueType any](collection MongoDbCollection, filterKey string, filterValue filterValueType) bool {
 	filter := bson.D{{filterKey, filterValue}}
+	result := collection.FindOne(filter)
+	if result == nil {
+		return false
+	}
+	return result.Err() == nil
+}
+
+func Exists_(collection MongoDbCollection, keyName string, filterValue interface{}) bool {
+	filter := bson.D{{keyName, filterValue}}
 	result := collection.FindOne(filter)
 	if result == nil {
 		return false
