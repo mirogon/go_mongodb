@@ -57,7 +57,7 @@ func ReplaceOnce_(collection MongoDbCollection, keyName string, filterValue inte
 	return nil
 }
 
-func GetOne[filterValueType any, resultType any](collection MongoDbCollection, filterKey string, filterValue filterValueType) (resultType, error) {
+func GetOne[resultType any](collection MongoDbCollection, filterKey string, filterValue interface{}) (resultType, error) {
 	var empty resultType
 	if collection == nil {
 		return empty, errors.New("collection missing")
