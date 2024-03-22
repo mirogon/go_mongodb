@@ -60,12 +60,12 @@ func ReplaceOnce_(collection MongoDbCollection, keyName string, filterValue inte
 func GetOne[filterValueType any, resultType any](collection MongoDbCollection, filterKey string, filterValue filterValueType) (resultType, error) {
 	var empty resultType
 	if collection == nil {
-		return empty, errors.New("Collection missing")
+		return empty, errors.New("collection missing")
 	}
 	filter := bson.D{{filterKey, filterValue}}
 	result := collection.FindOne(filter)
 	if result == nil || result.Err() != nil {
-		return empty, errors.New("Not found")
+		return empty, errors.New("not found")
 	}
 	var data resultType
 	err := result.Decode(&data)
@@ -82,7 +82,6 @@ func GetOne_(collection MongoDbCollection, keyName string, value interface{}, da
 	}
 
 	filter := bson.D{{keyName, value}}
-
 	result := collection.FindOne(filter)
 	if result == nil || result.Err() != nil {
 		return errors.New("not found")
@@ -90,7 +89,7 @@ func GetOne_(collection MongoDbCollection, keyName string, value interface{}, da
 
 	err := result.Decode(dataRef)
 	if err != nil {
-		return errors.New("decore error: " + err.Error())
+		return errors.New("decode error: " + err.Error())
 	}
 
 	return nil
