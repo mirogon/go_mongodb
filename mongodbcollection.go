@@ -135,18 +135,18 @@ func DeleteAll(collection MongoDbCollection) error {
 
 func Exists[filterValueType any](collection MongoDbCollection, filterKey string, filterValue filterValueType) bool {
 	filter := bson.D{{filterKey, filterValue}}
-	result := collection.FindOne(filter)
-	if result == nil {
+	found, err := collection.Count(filter)
+	if err != nil {
 		return false
 	}
-	return result.Err() == nil
+	return found > 0
 }
 
 func Exists_(collection MongoDbCollection, keyName string, filterValue interface{}) bool {
 	filter := bson.D{{keyName, filterValue}}
-	result := collection.FindOne(filter)
-	if result == nil {
+	found, err := collection.Count(filter)
+	if err != nil {
 		return false
 	}
-	return result.Err() == nil
+	return found > 0
 }
