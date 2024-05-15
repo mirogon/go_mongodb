@@ -102,7 +102,7 @@ func TestGetOneSpecific(t *testing.T) {
 	resultingDoc := mongo.NewSingleResultFromDocument(accData, nil, nil)
 	mockCollection.EXPECT().FindOne(bson.D{{"accountid", uint64(55)}}).Return(resultingDoc)
 
-	result, err := db_mongo.GetOne[uint64, AccountData](mockCollection, "accountid", 55)
+	result, err := db_mongo.GetOne[AccountData](mockCollection, "accountid", 55)
 	if err != nil {
 		t.Error()
 	}
@@ -111,7 +111,7 @@ func TestGetOneSpecific(t *testing.T) {
 	}
 }
 func TestGetOneSpecific_MissingCollection(t *testing.T) {
-	_, err := db_mongo.GetOne[uint64, AccountData](nil, "accountid", 55)
+	_, err := db_mongo.GetOne[AccountData](nil, "accountid", 55)
 	if err == nil {
 		t.Error()
 	}
@@ -124,7 +124,7 @@ func TestGetOneSpecific_FindOneFailure(t *testing.T) {
 	resultingDoc := mongo.NewSingleResultFromDocument(nil, nil, nil)
 	mockCollection.EXPECT().FindOne(bson.D{{"accountid", uint64(55)}}).Return(resultingDoc)
 
-	_, err := db_mongo.GetOne[uint64, AccountData](mockCollection, "accountid", 55)
+	_, err := db_mongo.GetOne[AccountData](mockCollection, "accountid", 55)
 	if err == nil {
 		t.Error()
 	}
